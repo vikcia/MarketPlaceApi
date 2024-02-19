@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  marketplaceapi:
+    image: ${DOCKER_REGISTRY-}marketplaceapi
+    build:
+      context: .
+      dockerfile: MovieApiHomeTask/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - my_shared_network
+
+networks:
+  my_shared_network:
+    external: true
