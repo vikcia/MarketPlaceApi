@@ -10,5 +10,5 @@ public interface IMarketService
     Task UpdateOrderAsCompleted(int id);
     Task<UserDto> GetUser(int id);
     Task<UserOrdersDto> GetUserOrders(int id);
-    Task<DateTime> DeleteUnpaidOrdersAfterTimeLimit(DateTime item);
+    Task<int> DeleteUnpaidOrdersAfterTimeLimit(DateTime item);
 }

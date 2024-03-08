@@ -27,14 +27,14 @@ public class UnpaidOrdersCleanupWorkerService : BackgroundService
         {
             try
             {
-                _logger.Log(LogLevel.Information, "Worker initiated at: {time}", DateTimeOffset.UtcNow);
+                _logger.Log(LogLevel.Information, "Worker initiated at: {time}", DateTimeOffset.Now);
 
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var ordersRepository = scope.ServiceProvider.GetRequiredService<IMarketRepository>()
                         ?? throw new Exception("Service DbOrdersCleanUpWorkerService not found.");
 
-                    var affectedRows = await ordersRepository.DeleteUnpaidOrdersAfterTimeLimit(DateTime.Now.AddHours(-2));
+                    var affectedRows = await ordersRepository.DeleteUnpaidOrdersAfterTimeLimit(DateTime.Now.AddMinutes(-10));
 
                     _logger.Log(LogLevel.Information, "Succesfully deleted {rows} rows.", affectedRows);
                 }
@@ -45,11 +45,11 @@ public class UnpaidOrdersCleanupWorkerService : BackgroundService
             {
                 await StopAsync(stoppingToken);
 
-                _logger.Log(LogLevel.Error, "DB cleanup error: {message}", ex.Message);
+                _logger.Log(LogLevel.Error, "DB cleanup config error: {message}", ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, "DB cleanup error: {message}", ex.Message);
+                _logger.Log(LogLevel.Error, "DB cleanup exception error: {message}", ex.Message);
 
                 await Task.Delay(60000, stoppingToken);
             }

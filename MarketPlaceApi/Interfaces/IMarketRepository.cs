@@ -10,5 +10,5 @@ public interface IMarketRepository
     Task<ItemEntity?> GetItemById(int id);
     Task<OrderEntity?> UpdateOrderAsCompleted(int id);
     Task<List<UserOrderEntity>> GetUserOrders(int id);
-    Task<DateTime> DeleteUnpaidOrdersAfterTimeLimit(DateTime time);
+    Task<int> DeleteUnpaidOrdersAfterTimeLimit(DateTime time);
 }

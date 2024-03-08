@@ -87,12 +87,12 @@ public class MarketRepository : IMarketRepository
         return await _connection.QuerySingleOrDefaultAsync<OrderEntity>(sql, parameters);
     }
 
-    public async Task<DateTime> DeleteUnpaidOrdersAfterTimeLimit(DateTime time)
+    public async Task<int> DeleteUnpaidOrdersAfterTimeLimit(DateTime time)
     {
         string sql = @"DELETE FROM orders 
-                        WHERE created_at<@CreatedAt
-                        AND delivery_status = inprogress";
+                   WHERE created_at < @CreatedAt
+                   AND delivery_status = @DeliveryStatus";
 
-        return await _connection.QuerySingleOrDefaultAsync<DateTime>(sql, new { CreatedAt = time });
+        return await _connection.ExecuteAsync(sql, new { CreatedAt = time, DeliveryStatus = Status.InProgress.ToString().ToLower() });
     }
 }

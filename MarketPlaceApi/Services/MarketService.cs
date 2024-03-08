@@ -99,8 +99,8 @@ public class MarketService : IMarketService
         return result;
     }
 
-    public async Task<DateTime> DeleteUnpaidOrdersAfterTimeLimit(DateTime item)
+    public async Task<int> DeleteUnpaidOrdersAfterTimeLimit(DateTime time)
     {
-        return await _marketRepository.DeleteUnpaidOrdersAfterTimeLimit(item);
+        return await _marketRepository.DeleteUnpaidOrdersAfterTimeLimit(time);
     }
 }
