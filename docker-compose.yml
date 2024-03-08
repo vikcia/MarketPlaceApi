@@ -5,12 +5,12 @@ services:
     image: ${DOCKER_REGISTRY-}marketplaceapi
     build:
       context: .
-      dockerfile: MovieApiHomeTask/Dockerfile
+      dockerfile: MarketPlaceApi/Dockerfile
     ports:
       - "8080:8080"
     networks:
-      - my_shared_network
+      - my_shared_network_market
 
 networks:
-  my_shared_network:
+  my_shared_network_market:
     external: true

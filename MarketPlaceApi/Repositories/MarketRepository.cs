@@ -16,12 +16,12 @@ public class MarketRepository : IMarketRepository
         _connection = connection;
     }
 
-    public async Task<ItemDto?> GetItemById(int id)
+    public async Task<ItemEntity?> GetItemById(int id)
     {
         string sql = @"SELECT id FROM items 
                         WHERE id=@Id";
 
-        return await _connection.QuerySingleOrDefaultAsync(sql, new { id });
+        return await _connection.QuerySingleOrDefaultAsync<ItemEntity>(sql, new { id });
     }
 
     public async Task<ItemEntity?> AddItem(ItemDto item)
@@ -62,7 +62,8 @@ public class MarketRepository : IMarketRepository
                         item_id, 
                         user_id, 
                         delivery_status, 
-                        name
+                        name,
+                        price
                     FROM orders
                     INNER JOIN items ON orders.item_id = items.id
                     WHERE orders.user_id=@UserId;";
