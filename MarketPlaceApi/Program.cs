@@ -1,24 +1,9 @@
 using MarketPlaceApi;
-using MarketPlaceApi.BackgroundServices;
 using MarketPlaceApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json")
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
-    .AddEnvironmentVariables()
-    .Build();
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
-
-//builder.Services.AddHostedService<MarketRepository>();
-
-builder.Services.AddHostedService<UnpaidOrdersCleanupWorkerService>();
 
 var app = builder.Build();
 
@@ -26,7 +11,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Market Place API V1");
+    });
 }
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
