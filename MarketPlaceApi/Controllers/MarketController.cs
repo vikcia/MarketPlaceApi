@@ -1,5 +1,6 @@
 ﻿using MarketPlaceApi.Dtos;
 using MarketPlaceApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketPlaceApi.Controllers;
@@ -27,12 +28,13 @@ public class MarketController : ControllerBase
     /// </summary>
     /// <param name="item">The item to add.</param>
     /// <returns>The status code indicating the result of the operation.</returns>
+    [Authorize(Roles = "seller")]
     [HttpPost("items")]
     [ProducesResponseType(201)]
     public async Task<IActionResult> AddItem(ItemDto item)
     {
         await _marketService.AddItem(item);
-        return StatusCode(201);
+        return Created("Item added", item);
     }
 
     /// <summary>
@@ -45,7 +47,7 @@ public class MarketController : ControllerBase
     public async Task<IActionResult> AddOrder(OrderDto order)
     {
         await _marketService.AddOrder(order);
-        return StatusCode(201);
+        return CreatedAtAction(nameof(GetUserOrders), new { Id = order.UserId }, order);
     }
 
     /// <summary>
@@ -53,6 +55,7 @@ public class MarketController : ControllerBase
     /// </summary>
     /// <param name="id">The ID of the order to update.</param>
     /// <returns>The status code indicating the result of the operation.</returns>
+    [Authorize(Roles = "seller, administrator")]
     [HttpPut("orders/completed/{id}")]
     [ProducesResponseType(200)]
     public async Task<IActionResult> UpdateOrderAsCompleted(int id)
@@ -66,6 +69,7 @@ public class MarketController : ControllerBase
     /// </summary>
     /// <param name="id">The ID of the user.</param>
     /// <returns>The user's orders.</returns>
+    [Authorize(Roles = "seller")]
     [HttpGet("orders/{id}")]
     [ProducesResponseType(typeof(IEnumerable<OrderDto>), 200)]
     public async Task<IActionResult> GetUserOrders(int id)

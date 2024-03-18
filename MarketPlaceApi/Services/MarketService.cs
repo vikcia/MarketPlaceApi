@@ -3,7 +3,6 @@ using MarketPlaceApi.Dtos;
 using MarketPlaceApi.Entities;
 using MarketPlaceApi.Interfaces;
 using MarketPlaceApi.Validators;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MarketPlaceApi.Services;
 

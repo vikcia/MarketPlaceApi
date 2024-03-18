@@ -1,5 +1,4 @@
 ﻿using MarketPlaceApi.Dtos;
-using System.Threading.Tasks;
 
 namespace MarketPlaceApi.Interfaces;
 
